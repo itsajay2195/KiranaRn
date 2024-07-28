@@ -6,6 +6,7 @@ class NewsMapper {
         source: item?.source,
         author: item?.author,
         url: item.url,
+        urlToImage: item.urlToImage,
         title: item.title || '',
         description: item.description || '',
         publishedAt: item.published || '',

@@ -7,6 +7,8 @@ export const lightColors = {
   border: '#CCCCCC',
   primary: '#007AFF',
   secondary: '#FF9500',
+  grey: '#808080',
+  black: '#000000',
 };
 
 export const darkColors = {
@@ -16,4 +18,6 @@ export const darkColors = {
   border: '#272729',
   primary: '#007AFF',
   secondary: '#FF9500',
+  grey: '808080',
+  black: '#000000',
 };

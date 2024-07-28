@@ -8,6 +8,7 @@ export class News extends Realm.Object {
       source: 'mixed',
       author: 'string',
       url: 'string',
+      urlToImage: 'string?',
       title: 'string',
       description: 'string',
       publishedAt: 'string',

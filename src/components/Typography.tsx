@@ -5,22 +5,30 @@ import {Text, TextStyle, StyleSheet} from 'react-native';
 import {useTheme} from '../context/ThemeContext';
 import {typography} from '../styles/typography';
 
-type TypographyVariant = 'headline' | 'subheading' | 'body' | 'caption';
+type TypographyVariant = 'subText' | 'body' | 'caption';
 
 interface TypographyProps {
   variant: TypographyVariant;
   children: React.ReactNode;
   style?: TextStyle;
+  numberOfLines?: number;
 }
 
-const Typography: React.FC<TypographyProps> = ({variant, children, style}) => {
+const Typography: React.FC<TypographyProps> = ({
+  variant,
+  children,
+  style,
+  numberOfLines,
+}) => {
   const {theme} = useTheme();
   const {colors} = theme;
 
   const variantStyles = typography[variant] || typography.body;
 
   return (
-    <Text style={[styles.base, variantStyles, {color: colors.text}, style]}>
+    <Text
+      numberOfLines={numberOfLines || 100}
+      style={[styles.base, variantStyles, {color: colors.text}, style]}>
       {children}
     </Text>
   );
