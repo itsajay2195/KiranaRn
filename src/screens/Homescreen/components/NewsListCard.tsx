@@ -34,7 +34,7 @@ const NewsListCard = ({data}: NewsItemProps) => {
             style={styles.imageStyle}
             source={{
               uri:
-                data?.urltoimage ||
+                data?.urlToImage ||
                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2EiVVE-6Yy60Gw9iGKVOtixTHVl7VFPJ2zM6Fk1Gvwiz4Oen-dxZ-58oyy0vtPBbNsO4&usqp=CAU',
             }}
           />

@@ -2,7 +2,7 @@ export interface NewsItemProps {
   data: {
     title: string;
     url: string;
-    urltoimage: string;
+    urlToImage: string;
     publishedAt: string;
     id: string;
     author: string;
