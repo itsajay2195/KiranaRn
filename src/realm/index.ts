@@ -1,8 +1,9 @@
+import {createRealmContext} from '@realm/react';
 import Realm from 'realm';
-import {NewsSchema} from './models/NewsSchema';
+import {News} from './models/NewsSchema';
 
-const realmConfig = {
-  schema: [NewsSchema],
+export const realmConfig = {
+  schema: [News],
 };
 
-export const realm = new Realm(realmConfig);
+export const realm = new Realm({schema: [News]});

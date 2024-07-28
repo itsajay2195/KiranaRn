@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -17,16 +17,14 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import Typography from './src/components/Typography';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+
 import appstore from './src/redux/appstore';
 import {Provider} from 'react-redux';
+import Homescreen from './src/screens/Homescreen/Homescreen';
+import {realmConfig} from './src/realm';
+import {News} from './src/realm/models/NewsSchema';
+import {RealmProvider} from '@realm/react';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -57,7 +55,6 @@ function Section({children, title}: SectionProps): React.JSX.Element {
     </View>
   );
 }
-
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -68,21 +65,9 @@ function App(): React.JSX.Element {
   return (
     <Provider store={appstore}>
       <SafeAreaView style={backgroundStyle}>
-        <StatusBar
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-          backgroundColor={backgroundStyle.backgroundColor}
-        />
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={backgroundStyle}>
-          <Header />
-          <View
-            style={{
-              backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            }}>
-            <Typography variant="headline">Welcome to the News App</Typography>
-          </View>
-        </ScrollView>
+        <RealmProvider {...realmConfig}>
+          <Homescreen />
+        </RealmProvider>
       </SafeAreaView>
     </Provider>
   );

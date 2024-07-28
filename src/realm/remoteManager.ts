@@ -1,15 +1,30 @@
-import {realm} from '.';
+import {realm} from './index';
 
-export const saveHeadlines = (headlines: any) => {
-  realm.write(() => {
-    headlines.forEach((headline: any) => {
-      realm.create('News', headline); // Correct use of 'modified'
-    });
-  });
-};
+export const useRealmOperations = () => {
+  const saveHeadlines = (headlines: any) => {
+    if (realm && !realm.isClosed) {
+      realm.write(() => {
+        headlines.forEach((headline: any) => {
+          realm.create('News', headline); // Use 'modified' if needed
+        });
+      });
+    } else {
+      console.error('Realm instance is closed or invalid.');
+    }
+  };
 
-export const clearHeadlines = () => {
-  realm.write(() => {
-    realm.deleteAll();
-  });
+  const clearHeadlines = () => {
+    if (realm && !realm.isClosed) {
+      realm.write(() => {
+        realm.deleteAll();
+      });
+    } else {
+      console.error('Realm instance is closed or invalid.');
+    }
+  };
+
+  return {
+    saveHeadlines,
+    clearHeadlines,
+  };
 };
