@@ -9,3 +9,4 @@
 
 # Add any project specific keep options here:
 -keep class io.realm.react.**
+-keep class com.transistorsoft.rnbackgroundfetch.HeadlessTask { *; }
