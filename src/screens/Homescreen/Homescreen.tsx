@@ -15,6 +15,7 @@ import {fetchHeadlines} from '../../services/Api/apiservices';
 import {getRandomIndex} from '../../utils/utils';
 import {countries} from '../../utils/utils';
 import {useTheme} from '../../context/ThemeContext';
+import NewsList from './components/NewsList';
 
 const Homescreen = () => {
   const {theme} = useTheme();
@@ -27,8 +28,6 @@ const Homescreen = () => {
   const previousCountryIndex = useSelector(
     (state: any) => state.news.previousCountryIndex,
   );
-  const loading = useSelector((state: any) => state.news.loading);
-
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const loadHeadlines = useCallback(
@@ -64,14 +63,14 @@ const Homescreen = () => {
     [dispatch, saveHeadlines, savedHeadlines],
   );
 
-  const resetData = () => {
+  const resetData = useCallback(() => {
     setDisplayedHeadlines([]);
     clearHeadlines();
     const newCountryIndex = getRandomIndex(previousCountryIndex, countries);
     loadHeadlines(true, newCountryIndex);
     // Start or restart the timer
     startTimer();
-  };
+  }, [previousCountryIndex, countries]);
 
   const fetchNextBatch = useCallback(() => {
     if (currentIndex >= savedHeadlines.length && savedHeadlines?.length > 0) {
@@ -79,12 +78,18 @@ const Homescreen = () => {
       setCurrentIndex(0);
       resetData();
     } else {
-      const batchSize = displayedHeadlines.length === 0 ? 10 : 35;
+      const batchSize = displayedHeadlines.length === 0 ? 10 : 5;
       const newIndex = currentIndex + batchSize;
       const nextBatch = savedHeadlines.slice(currentIndex, newIndex);
+      console.log('inside else', currentIndex, newIndex);
       setCurrentIndex(newIndex);
       setDisplayedHeadlines(prev => [...nextBatch, ...prev]);
     }
+  }, [displayedHeadlines, savedHeadlines, resetData, currentIndex]);
+
+  const onRefreshPress = useCallback(() => {
+    fetchNextBatch();
+    startTimer();
   }, [displayedHeadlines, savedHeadlines, resetData, currentIndex]);
 
   const startTimer = useCallback(() => {
@@ -114,9 +119,6 @@ const Homescreen = () => {
     }
   }, [trigger, fetchNextBatch]);
 
-  const renderItem = useCallback(({item}: any) => {
-    return <NewsListCard data={item} />;
-  }, []);
   return (
     <View style={{flex: 1, backgroundColor: theme.colors.background}}>
       {displayedHeadlines?.length == 0 ? (
@@ -124,11 +126,9 @@ const Homescreen = () => {
           <ActivityIndicator size={'large'} color={theme.colors.primary} />
         </View>
       ) : (
-        <FlatList
-          data={displayedHeadlines}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => item?.id?.toString()}
-          contentContainerStyle={{paddingBottom: 100}}
+        <NewsList
+          displayedHeadlines={displayedHeadlines}
+          onRefreshPress={onRefreshPress}
         />
       )}
     </View>
