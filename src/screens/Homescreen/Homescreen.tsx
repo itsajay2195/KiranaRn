@@ -14,6 +14,7 @@ import {countries} from '../../utils/utils';
 import {useTheme} from '../../context/ThemeContext';
 import NewsList from './components/NewsList';
 import {addPinnedHeadline} from '../../redux/newsSlice';
+import {useLoadHeadLines} from '../../hooks/useLoadHeadLines';
 
 const Homescreen = () => {
   const {theme} = useTheme();
@@ -32,40 +33,7 @@ const Homescreen = () => {
     (state: any) => state.news.previousCountryIndex,
   );
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const loadHeadlines = useCallback(
-    async (initialLoad = false, countryIndex: number) => {
-      dispatch(setLoading(true));
-      try {
-        dispatch(updateCountryIndex(countryIndex));
-        const fetchedHeadlines = await fetchHeadlines(countries[countryIndex]);
-        let mappedData = fetchedHeadlines.map((item, index) => ({
-          ...item,
-          id: `${index + 1}`,
-          urlToImage: item?.urlToImage || '',
-          author: item?.author || '',
-          isDeleted: false,
-          source: {
-            id: item?.source?.id || index,
-            name: item?.source?.name,
-          },
-        }));
-
-        if (initialLoad) {
-          saveHeadlines(mappedData);
-          dispatch(setHeadlines(mappedData));
-        } else {
-          saveHeadlines(mappedData);
-          dispatch(setHeadlines([...savedHeadlines, ...mappedData]));
-        }
-      } catch (error) {
-        console.error('Error loading headlines:', error);
-      } finally {
-        dispatch(setLoading(false));
-      }
-    },
-    [dispatch, saveHeadlines, savedHeadlines],
-  );
+  const {loadHeadlines, loading} = useLoadHeadLines();
 
   const resetData = useCallback(() => {
     setDisplayedHeadlines([]);
