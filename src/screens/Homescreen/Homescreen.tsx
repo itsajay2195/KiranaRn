@@ -1,25 +1,17 @@
-import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useQuery} from '@realm/react';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  setHeadlines,
-  setLoading,
-  updateCountryIndex,
-} from '../../redux/newsSlice';
 import {useRealmOperations} from '../../realm/remoteManager';
-import {fetchHeadlines} from '../../services/Api/apiservices';
 import {getRandomIndex} from '../../utils/utils';
 import {countries} from '../../utils/utils';
-import {useTheme} from '../../context/ThemeContext';
 import NewsList from './components/NewsList';
 import {addPinnedHeadline} from '../../redux/newsSlice';
 import {useLoadHeadLines} from '../../hooks/useLoadHeadLines';
+import {theme} from '../../styles/themes';
 
 const Homescreen = () => {
-  const {theme} = useTheme();
-  const {saveHeadlines, clearHeadlines, updateHeadlineStatusById} =
-    useRealmOperations();
+  const {clearHeadlines, updateHeadlineStatusById} = useRealmOperations();
   const [trigger, setTrigger] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayedHeadlines, setDisplayedHeadlines] = useState<any[]>([]);
@@ -112,9 +104,9 @@ const Homescreen = () => {
   );
 
   return (
-    <View style={{flex: 1, backgroundColor: theme.colors.background}}>
+    <View style={styles.container}>
       {displayedHeadlines?.length == 0 ? (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={styles.activityIndicatorWrapper}>
           <ActivityIndicator size={'large'} color={theme.colors.primary} />
         </View>
       ) : (
@@ -134,4 +126,11 @@ const Homescreen = () => {
 
 export default Homescreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {flex: 1, backgroundColor: theme.colors.background},
+  activityIndicatorWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

@@ -1,7 +1,7 @@
 import {ActivityIndicator, Image, StyleSheet, View} from 'react-native';
 import React, {useEffect} from 'react';
 
-import {lightTheme} from '../../styles/themes';
+import {theme} from '../../styles/themes';
 import {useLoadHeadLines} from '../../hooks/useLoadHeadLines';
 import {useQuery} from '@realm/react';
 
@@ -22,7 +22,7 @@ const SplashScreen = ({navigation}: any) => {
         source={require('../../assets//png/headline.png')}
       />
       {loading ? (
-        <ActivityIndicator size={'small'} color={lightTheme.colors.primary} />
+        <ActivityIndicator size={'small'} color={theme.colors.primary} />
       ) : null}
     </View>
   );

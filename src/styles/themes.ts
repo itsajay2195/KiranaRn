@@ -3,14 +3,8 @@
 import {lightColors, darkColors} from './colors';
 import {sizes, iconSizes} from './sizes';
 
-export const lightTheme = {
+export const theme = {
   colors: lightColors,
-  sizes,
-  iconSizes,
-};
-
-export const darkTheme = {
-  colors: darkColors,
   sizes,
   iconSizes,
 };

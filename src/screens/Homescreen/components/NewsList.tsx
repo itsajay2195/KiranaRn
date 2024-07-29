@@ -9,6 +9,7 @@ import {
 import React from 'react';
 import NewsListCard from './NewsListCard';
 import Refresh from 'react-native-vector-icons/Feather';
+import {theme} from '../../../styles/themes';
 
 const ListHeaderComponent = ({
   onRefreshPress,
@@ -18,7 +19,7 @@ const ListHeaderComponent = ({
   pinnedHeadline: any;
 }) => {
   return (
-    <View>
+    <View style={styles.headerComponentContainer}>
       <View style={styles.headerContainer}>
         <View style={styles.imageContainer}>
           <Image
@@ -44,6 +45,17 @@ const ListHeaderComponent = ({
   );
 };
 
+const itemSeparator = () => {
+  return (
+    <View
+      style={{
+        height: 1,
+        opacity: 0.25,
+        backgroundColor: theme.colors.grey,
+      }}
+    />
+  );
+};
 const RenderItem = ({
   data,
   onPinPressed,
@@ -97,6 +109,7 @@ const NewsList = ({
       renderItem={renderItem}
       keyExtractor={(item, index) => item?.id?.toString()}
       contentContainerStyle={{paddingBottom: 100}}
+      ItemSeparatorComponent={itemSeparator}
     />
   );
 };
@@ -120,5 +133,9 @@ const styles = StyleSheet.create({
     width: 28,
     justifyContent: 'center',
     marginRight: 10,
+  },
+  headerComponentContainer: {
+    borderBottomWidth: 0.25,
+    borderBottomColor: theme.colors.grey,
   },
 });

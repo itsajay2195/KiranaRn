@@ -2,10 +2,9 @@ import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {NewsItemProps} from '../../../Types/HomescreenTypes';
 import Typography from '../../../components/Typography';
-import {useTheme} from '../../../context/ThemeContext';
 import {dateFormatter} from '../../../utils/utils';
 import {Swipeable} from 'react-native-gesture-handler';
-import {lightTheme} from '../../../styles/themes';
+import {theme} from '../../../styles/themes';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Trash from 'react-native-vector-icons/EvilIcons';
 
@@ -18,14 +17,14 @@ const renderLeftActions = (onPin: () => void, onDelete: () => void) => {
       <TouchableOpacity
         onPress={onDelete}
         style={{
-          paddingTop: lightTheme.sizes.small,
-          backgroundColor: lightTheme.colors.secondaryBlue,
+          paddingTop: theme.sizes.small,
+          backgroundColor: theme.colors.secondaryBlue,
           paddingHorizontal: 8,
           alignItems: 'center',
           borderTopLeftRadius: 10,
         }}>
-        <Trash name={'trash'} size={20} color={lightTheme.colors.white} />
-        <Typography variant="caption" style={{color: lightTheme.colors.white}}>
+        <Trash name={'trash'} size={20} color={theme.colors.white} />
+        <Typography variant="caption" style={{color: theme.colors.white}}>
           Delete
         </Typography>
       </TouchableOpacity>
@@ -33,14 +32,14 @@ const renderLeftActions = (onPin: () => void, onDelete: () => void) => {
       <TouchableOpacity
         onPress={onPin}
         style={{
-          paddingTop: lightTheme.sizes.small,
-          backgroundColor: lightTheme.colors.secondaryBlue,
+          paddingTop: theme.sizes.small,
+          backgroundColor: theme.colors.secondaryBlue,
           paddingHorizontal: 8,
           alignItems: 'center',
           borderBottomLeftRadius: 10,
         }}>
-        <Icon name={'pin'} size={16} color={lightTheme.colors.white} />
-        <Typography style={{color: lightTheme.colors.white}} variant="caption">
+        <Icon name={'pin'} size={16} color={theme.colors.white} />
+        <Typography style={{color: theme.colors.white}} variant="caption">
           Pin
         </Typography>
       </TouchableOpacity>
@@ -59,8 +58,6 @@ const NewsListCard = ({
   onDeletePressed: (val: {id: string}) => void;
   isPinnedItem: boolean;
 }) => {
-  const {theme} = useTheme();
-  const styles = createStyles(theme);
   return (
     <Swipeable
       enabled={!isPinnedItem}
@@ -74,7 +71,7 @@ const NewsListCard = ({
         <View style={styles.infoSection}>
           {isPinnedItem ? (
             <View style={styles.pinnedItemWrapper}>
-              <Icon name={'pin'} size={16} color={lightTheme.colors.primary} />
+              <Icon name={'pin'} size={16} color={theme.colors.primary} />
             </View>
           ) : null}
           <View style={{flex: 3, flexDirection: 'row'}}>
@@ -118,32 +115,31 @@ const NewsListCard = ({
 
 export default NewsListCard;
 
-const createStyles = (theme: any) =>
-  StyleSheet.create({
-    container: {
-      padding: 12,
-      backgroundColor: theme.colors.background,
-    },
-    centerContent: {
-      flexDirection: 'row',
-      gap: 8,
-      paddingVertical: 8,
-    },
-    titleContainer: {flex: 3},
-    imageWrapper: {
-      height: 77,
-      width: 77,
-    },
-    imageStyle: {height: '100%', width: '100%', borderRadius: 10},
-    infoSection: {flexDirection: 'row', padding: 0},
-    pinnedItemWrapper: {
-      height: 24,
-      width: 24,
-      borderRadius: 50,
-      borderWidth: 0.5,
-      borderColor: lightTheme.colors.grey,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginRight: 4,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    padding: 12,
+    backgroundColor: theme.colors.background,
+  },
+  centerContent: {
+    flexDirection: 'row',
+    gap: 8,
+    paddingVertical: 8,
+  },
+  titleContainer: {flex: 3},
+  imageWrapper: {
+    height: 77,
+    width: 77,
+  },
+  imageStyle: {height: '100%', width: '100%', borderRadius: 10},
+  infoSection: {flexDirection: 'row', padding: 0},
+  pinnedItemWrapper: {
+    height: 24,
+    width: 24,
+    borderRadius: 50,
+    borderWidth: 0.5,
+    borderColor: theme.colors.grey,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 4,
+  },
+});

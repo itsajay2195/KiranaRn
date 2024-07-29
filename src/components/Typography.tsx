@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {Text, TextStyle, StyleSheet} from 'react-native';
-import {useTheme} from '../context/ThemeContext';
+import {theme} from '../styles/themes';
 import {typography} from '../styles/typography';
 
 type TypographyVariant = 'subText' | 'body' | 'caption';
@@ -20,7 +20,6 @@ const Typography: React.FC<TypographyProps> = ({
   style,
   numberOfLines,
 }) => {
-  const {theme} = useTheme();
   const {colors} = theme;
 
   const variantStyles = typography[variant] || typography.body;
