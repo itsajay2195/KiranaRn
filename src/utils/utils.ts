@@ -12,3 +12,15 @@ export const dateFormatter = (date: any) => {
   // Format the time as 'h.mmAM/PM'
   return `${hours}.${minutes}${ampm}`;
 };
+
+export const countries = ['in', 'us', 'de', 'gb'];
+
+export const getRandomIndex = (previousIndex: number, countries: any[]) => {
+  let newIndex;
+  do {
+    // Generate a random index
+    newIndex = Math.floor(Math.random() * countries.length);
+  } while (newIndex === previousIndex);
+
+  return newIndex;
+};

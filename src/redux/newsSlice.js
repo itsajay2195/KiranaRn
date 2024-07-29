@@ -6,6 +6,7 @@ const newsSlice = createSlice({
     headlines: [],
     pinnedHeadlines: [],
     currentBatch: [],
+    previousCountryIndex: 0,
   },
   reducers: {
     setHeadlines: (state, action) => {
@@ -25,6 +26,9 @@ const newsSlice = createSlice({
     resetHeadlines: state => {
       state.headlines = [];
     },
+    updateCountryIndex: (state, action) => {
+      state.previousCountryIndex = action.payload;
+    },
   },
 });
 
@@ -34,5 +38,6 @@ export const {
   removeHeadline,
   setCurrentBatch,
   resetHeadlines,
+  updateCountryIndex,
 } = newsSlice.actions;
 export default newsSlice.reducer;
