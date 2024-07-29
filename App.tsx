@@ -25,6 +25,7 @@ import Homescreen from './src/screens/Homescreen/Homescreen';
 import {realmConfig} from './src/realm';
 import {News} from './src/realm/models/NewsSchema';
 import {RealmProvider} from '@realm/react';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -60,11 +61,13 @@ function App(): React.JSX.Element {
 
   return (
     <Provider store={appstore}>
-      <SafeAreaView style={{flex: 1}}>
-        <RealmProvider {...realmConfig}>
-          <Homescreen />
-        </RealmProvider>
-      </SafeAreaView>
+      <GestureHandlerRootView style={{flex: 1}}>
+        <SafeAreaView style={{flex: 1}}>
+          <RealmProvider {...realmConfig}>
+            <Homescreen />
+          </RealmProvider>
+        </SafeAreaView>
+      </GestureHandlerRootView>
     </Provider>
   );
 }

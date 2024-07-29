@@ -9,6 +9,8 @@ export const lightColors = {
   secondary: '#FF9500',
   grey: '#808080',
   black: '#000000',
+  white: '#FFFFFF',
+  secondaryBlue: '#4BBDFC',
 };
 
 export const darkColors = {

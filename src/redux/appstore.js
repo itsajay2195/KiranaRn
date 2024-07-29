@@ -5,6 +5,10 @@ const appstore = configureStore({
   reducer: {
     news: newsReducer,
   },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export default appstore;

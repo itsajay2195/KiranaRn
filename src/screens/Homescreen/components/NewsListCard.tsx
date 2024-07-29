@@ -1,51 +1,118 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {NewsItemProps} from '../../../Types/HomescreenTypes';
 import Typography from '../../../components/Typography';
 import {useTheme} from '../../../context/ThemeContext';
 import {dateFormatter} from '../../../utils/utils';
+import {Swipeable} from 'react-native-gesture-handler';
+import {lightTheme} from '../../../styles/themes';
+import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import Trash from 'react-native-vector-icons/EvilIcons';
 
-const NewsListCard = ({data}: NewsItemProps) => {
+const renderLeftActions = (onPin: () => void, onDelete: () => void) => {
+  return (
+    <View
+      style={{
+        justifyContent: 'center',
+      }}>
+      <TouchableOpacity
+        onPress={onDelete}
+        style={{
+          paddingTop: lightTheme.sizes.small,
+          backgroundColor: lightTheme.colors.secondaryBlue,
+          paddingHorizontal: 8,
+          alignItems: 'center',
+          borderTopLeftRadius: 10,
+        }}>
+        <Trash name={'trash'} size={20} color={lightTheme.colors.white} />
+        <Typography variant="caption" style={{color: lightTheme.colors.white}}>
+          Delete
+        </Typography>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={onPin}
+        style={{
+          paddingTop: lightTheme.sizes.small,
+          backgroundColor: lightTheme.colors.secondaryBlue,
+          paddingHorizontal: 8,
+          alignItems: 'center',
+          borderBottomLeftRadius: 10,
+        }}>
+        <Icon name={'pin'} size={16} color={lightTheme.colors.white} />
+        <Typography style={{color: lightTheme.colors.white}} variant="caption">
+          Pin
+        </Typography>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const NewsListCard = ({
+  data,
+  onDeletePressed,
+  onPinPressed,
+  isPinnedItem,
+}: {
+  data: NewsItemProps;
+  onPinPressed: (val: {id: string}) => void;
+  onDeletePressed: (val: {id: string}) => void;
+  isPinnedItem: boolean;
+}) => {
   const {theme} = useTheme();
   const styles = createStyles(theme);
   return (
-    <View style={styles.container}>
-      <View style={styles.infoSection}>
-        <View style={{flex: 3, flexDirection: 'row'}}>
-          <Typography style={{color: theme.colors.grey}} variant={'caption'}>
-            {data?.source?.name}
-          </Typography>
+    <Swipeable
+      enabled={!isPinnedItem}
+      renderRightActions={(progress, dragX) =>
+        renderLeftActions(
+          () => onPinPressed(data),
+          () => onDeletePressed(data),
+        )
+      }>
+      <View style={styles.container}>
+        <View style={styles.infoSection}>
+          {isPinnedItem ? (
+            <View style={styles.pinnedItemWrapper}>
+              <Icon name={'pin'} size={16} color={lightTheme.colors.primary} />
+            </View>
+          ) : null}
+          <View style={{flex: 3, flexDirection: 'row'}}>
+            <Typography style={{color: theme.colors.grey}} variant={'caption'}>
+              {data?.source?.name}
+            </Typography>
+          </View>
+          <View style={{flex: 1, flexDirection: 'row-reverse'}}>
+            <Typography style={{color: theme.colors.black}} variant="subText">
+              {dateFormatter(data?.publishedAt || new Date())}
+            </Typography>
+          </View>
         </View>
-        <View style={{flex: 1, flexDirection: 'row-reverse'}}>
-          <Typography style={{color: theme.colors.black}} variant="subText">
-            {dateFormatter(data?.publishedAt || new Date())}
-          </Typography>
+        <View style={styles.centerContent}>
+          <View style={styles.titleContainer}>
+            <Typography numberOfLines={3} variant={'body'}>
+              {data?.title}
+            </Typography>
+          </View>
+          <View style={styles.imageWrapper}>
+            <Image
+              style={styles.imageStyle}
+              source={{
+                uri:
+                  data?.urlToImage ||
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2EiVVE-6Yy60Gw9iGKVOtixTHVl7VFPJ2zM6Fk1Gvwiz4Oen-dxZ-58oyy0vtPBbNsO4&usqp=CAU',
+              }}
+            />
+          </View>
         </View>
-      </View>
-      <View style={styles.centerContent}>
-        <View style={styles.titleContainer}>
-          <Typography numberOfLines={3} variant={'body'}>
-            {data?.title}
-          </Typography>
-        </View>
-        <View style={styles.imageWrapper}>
-          <Image
-            style={styles.imageStyle}
-            source={{
-              uri:
-                data?.urlToImage ||
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2EiVVE-6Yy60Gw9iGKVOtixTHVl7VFPJ2zM6Fk1Gvwiz4Oen-dxZ-58oyy0vtPBbNsO4&usqp=CAU',
-            }}
-          />
-        </View>
-      </View>
 
-      <View>
-        <Typography style={{color: theme.colors.grey}} variant={'subText'}>
-          {data?.author}
-        </Typography>
+        <View>
+          <Typography style={{color: theme.colors.grey}} variant={'subText'}>
+            {data?.author}
+          </Typography>
+        </View>
       </View>
-    </View>
+    </Swipeable>
   );
 };
 
@@ -69,4 +136,14 @@ const createStyles = (theme: any) =>
     },
     imageStyle: {height: '100%', width: '100%', borderRadius: 10},
     infoSection: {flexDirection: 'row', padding: 0},
+    pinnedItemWrapper: {
+      height: 24,
+      width: 24,
+      borderRadius: 50,
+      borderWidth: 0.5,
+      borderColor: lightTheme.colors.grey,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 4,
+    },
   });

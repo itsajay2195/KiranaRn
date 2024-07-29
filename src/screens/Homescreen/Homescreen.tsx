@@ -13,15 +13,21 @@ import {getRandomIndex} from '../../utils/utils';
 import {countries} from '../../utils/utils';
 import {useTheme} from '../../context/ThemeContext';
 import NewsList from './components/NewsList';
+import {addPinnedHeadline} from '../../redux/newsSlice';
 
 const Homescreen = () => {
   const {theme} = useTheme();
-  const {saveHeadlines, clearHeadlines} = useRealmOperations();
+  const {saveHeadlines, clearHeadlines, updateHeadlineStatusById} =
+    useRealmOperations();
   const [trigger, setTrigger] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayedHeadlines, setDisplayedHeadlines] = useState<any[]>([]);
   const savedHeadlines = useQuery('News');
   const dispatch = useDispatch();
+  const pinnedHeadline = useSelector(
+    (state: any) => state.news.pinnedHeadlines,
+  );
+
   const previousCountryIndex = useSelector(
     (state: any) => state.news.previousCountryIndex,
   );
@@ -38,6 +44,7 @@ const Homescreen = () => {
           id: `${index + 1}`,
           urlToImage: item?.urlToImage || '',
           author: item?.author || '',
+          isDeleted: false,
           source: {
             id: item?.source?.id || index,
             name: item?.source?.name,
@@ -115,6 +122,27 @@ const Homescreen = () => {
     }
   }, [trigger, fetchNextBatch]);
 
+  const onPinPressed = useCallback((item: {id: string}) => {
+    dispatch(addPinnedHeadline(item));
+  }, []);
+
+  const onDeletePressed = useCallback(
+    (item: {id: string}) => {
+      updateHeadlineStatusById(item?.id);
+      setDisplayedHeadlines((prev: any) => {
+        let filteredData = prev?.map((headline: any) => {
+          if (headline?.id !== item?.id) {
+            return headline;
+          } else {
+            return {...headline, isDeleted: true};
+          }
+        });
+        return filteredData;
+      });
+    },
+    [savedHeadlines],
+  );
+
   return (
     <View style={{flex: 1, backgroundColor: theme.colors.background}}>
       {displayedHeadlines?.length == 0 ? (
@@ -123,8 +151,13 @@ const Homescreen = () => {
         </View>
       ) : (
         <NewsList
-          displayedHeadlines={displayedHeadlines}
+          displayedHeadlines={displayedHeadlines?.filter(
+            (item: any) => !item?.isDeleted,
+          )}
           onRefreshPress={onRefreshPress}
+          onPinPressed={onPinPressed}
+          onDeletePressed={onDeletePressed}
+          pinnedHeadline={pinnedHeadline}
         />
       )}
     </View>
