@@ -8,9 +8,6 @@ import {
   updateCountryIndex,
 } from '../../redux/newsSlice';
 import {useRealmOperations} from '../../realm/remoteManager';
-import BackgroundFetch from 'react-native-background-fetch';
-import NewsListCard from './components/NewsListCard';
-import useFetchDataHook from './hooks/usFetchDataHook';
 import {fetchHeadlines} from '../../services/Api/apiservices';
 import {getRandomIndex} from '../../utils/utils';
 import {countries} from '../../utils/utils';
@@ -81,7 +78,6 @@ const Homescreen = () => {
       const batchSize = displayedHeadlines.length === 0 ? 10 : 5;
       const newIndex = currentIndex + batchSize;
       const nextBatch = savedHeadlines.slice(currentIndex, newIndex);
-      console.log('inside else', currentIndex, newIndex);
       setCurrentIndex(newIndex);
       setDisplayedHeadlines(prev => [...nextBatch, ...prev]);
     }
