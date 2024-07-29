@@ -1,8 +1,12 @@
-import {FlatList, StyleSheet, View} from 'react-native';
+import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useQuery} from '@realm/react';
 import {useDispatch, useSelector} from 'react-redux';
-import {setHeadlines, updateCountryIndex} from '../../redux/newsSlice';
+import {
+  setHeadlines,
+  setLoading,
+  updateCountryIndex,
+} from '../../redux/newsSlice';
 import {useRealmOperations} from '../../realm/remoteManager';
 import BackgroundFetch from 'react-native-background-fetch';
 import NewsListCard from './components/NewsListCard';
@@ -10,11 +14,11 @@ import useFetchDataHook from './hooks/usFetchDataHook';
 import {fetchHeadlines} from '../../services/Api/apiservices';
 import {getRandomIndex} from '../../utils/utils';
 import {countries} from '../../utils/utils';
+import {useTheme} from '../../context/ThemeContext';
 
-let timer: any;
 const Homescreen = () => {
+  const {theme} = useTheme();
   const {saveHeadlines, clearHeadlines} = useRealmOperations();
-  // const [timer, setTimer] = useState<NodeJS.Timeout | null>(false);
   const [trigger, setTrigger] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayedHeadlines, setDisplayedHeadlines] = useState<any[]>([]);
@@ -23,13 +27,13 @@ const Homescreen = () => {
   const previousCountryIndex = useSelector(
     (state: any) => state.news.previousCountryIndex,
   );
-
-  const [loading, setLoading] = useState(false);
+  const loading = useSelector((state: any) => state.news.loading);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const loadHeadlines = useCallback(
     async (initialLoad = false, countryIndex: number) => {
+      dispatch(setLoading(true));
       try {
         dispatch(updateCountryIndex(countryIndex));
         const fetchedHeadlines = await fetchHeadlines(countries[countryIndex]);
@@ -54,7 +58,7 @@ const Homescreen = () => {
       } catch (error) {
         console.error('Error loading headlines:', error);
       } finally {
-        setLoading(false);
+        dispatch(setLoading(false));
       }
     },
     [dispatch, saveHeadlines, savedHeadlines],
@@ -64,14 +68,13 @@ const Homescreen = () => {
     setDisplayedHeadlines([]);
     clearHeadlines();
     const newCountryIndex = getRandomIndex(previousCountryIndex, countries);
-    // dispatch(updateCountryIndex(newCountryIndex));
     loadHeadlines(true, newCountryIndex);
     // Start or restart the timer
     startTimer();
   };
 
   const fetchNextBatch = useCallback(() => {
-    if (currentIndex >= savedHeadlines.length) {
+    if (currentIndex >= savedHeadlines.length && savedHeadlines?.length > 0) {
       if (timerRef.current) clearInterval(timerRef.current);
       setCurrentIndex(0);
       resetData();
@@ -88,7 +91,7 @@ const Homescreen = () => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
       setTrigger(true);
-    }, 4000); // 4 seconds
+    }, 10000); // 4 seconds
   }, [savedHeadlines]);
 
   useEffect(() => {
@@ -115,8 +118,12 @@ const Homescreen = () => {
     return <NewsListCard data={item} />;
   }, []);
   return (
-    <View style={{backgroundColor: 'white'}}>
-      {!loading && displayedHeadlines && (
+    <View style={{flex: 1, backgroundColor: theme.colors.background}}>
+      {displayedHeadlines?.length == 0 ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size={'large'} color={theme.colors.primary} />
+        </View>
+      ) : (
         <FlatList
           data={displayedHeadlines}
           renderItem={renderItem}

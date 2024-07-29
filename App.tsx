@@ -58,13 +58,9 @@ function Section({children, title}: SectionProps): React.JSX.Element {
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
     <Provider store={appstore}>
-      <SafeAreaView style={backgroundStyle}>
+      <SafeAreaView style={{flex: 1}}>
         <RealmProvider {...realmConfig}>
           <Homescreen />
         </RealmProvider>
