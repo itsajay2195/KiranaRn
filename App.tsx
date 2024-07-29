@@ -26,36 +26,30 @@ import {realmConfig} from './src/realm';
 import {News} from './src/realm/models/NewsSchema';
 import {RealmProvider} from '@realm/react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import SplashScreen from './src/screens/SplashScreen/SplashScreen';
+import {NavigationContainer} from '@react-navigation/native';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const Stack = createNativeStackNavigator();
+const RootNavigation = () => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Splash">
+        <Stack.Screen
+          name="Splash"
+          component={SplashScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Home"
+          component={Homescreen}
+          options={{headerShown: false}}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
+
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -64,7 +58,7 @@ function App(): React.JSX.Element {
       <GestureHandlerRootView style={{flex: 1}}>
         <SafeAreaView style={{flex: 1}}>
           <RealmProvider {...realmConfig}>
-            <Homescreen />
+            <RootNavigation />
           </RealmProvider>
         </SafeAreaView>
       </GestureHandlerRootView>
