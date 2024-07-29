@@ -7,21 +7,14 @@ export const typography = {
   letterSpacing: -0.64, // Default letter spacing
 
   // Define specific variants
-  headline: {
-    fontSize: 24,
-    fontWeight: '700',
-    lineHeight: 30,
-    letterSpacing: -0.64,
-  },
-  subheading: {
-    fontSize: 20,
-    fontWeight: '600',
-    lineHeight: 26,
-    letterSpacing: -0.48,
+  subText: {
+    fontSize: 12,
+    fontWeight: '400',
+    lineHeight: 16.2,
   },
   body: {
     fontSize: 18,
-    fontWeight: '400',
+    fontWeight: '700',
     lineHeight: 24.3,
     letterSpacing: -0.32,
   },
