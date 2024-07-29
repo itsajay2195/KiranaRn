@@ -92,7 +92,7 @@ const Homescreen = () => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
       setTrigger(true);
-    }, 10000); // 4 seconds
+    }, 1000000); // 4 seconds
   }, [savedHeadlines]);
 
   useEffect(() => {
