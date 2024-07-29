@@ -1,14 +1,13 @@
 export interface NewsItemProps {
-  data: {
-    title: string;
-    url: string;
-    urlToImage: string;
-    publishedAt: string;
+  title: string;
+  url: string;
+  urlToImage: string;
+  publishedAt: string;
+  id: string;
+  author: string;
+  isDeleted: boolean;
+  source: {
     id: string;
-    author: string;
-    source: {
-      id: string;
-      name: string;
-    };
+    name: string;
   };
 }

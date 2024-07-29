@@ -17,7 +17,8 @@ import {addPinnedHeadline} from '../../redux/newsSlice';
 
 const Homescreen = () => {
   const {theme} = useTheme();
-  const {saveHeadlines, clearHeadlines} = useRealmOperations();
+  const {saveHeadlines, clearHeadlines, updateHeadlineStatusById} =
+    useRealmOperations();
   const [trigger, setTrigger] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayedHeadlines, setDisplayedHeadlines] = useState<any[]>([]);
@@ -43,6 +44,7 @@ const Homescreen = () => {
           id: `${index + 1}`,
           urlToImage: item?.urlToImage || '',
           author: item?.author || '',
+          isDeleted: false,
           source: {
             id: item?.source?.id || index,
             name: item?.source?.name,
@@ -97,7 +99,7 @@ const Homescreen = () => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
       setTrigger(true);
-    }, 1000000); // 4 seconds
+    }, 10000); // 4 seconds
   }, [savedHeadlines]);
 
   useEffect(() => {
@@ -124,7 +126,22 @@ const Homescreen = () => {
     dispatch(addPinnedHeadline(item));
   }, []);
 
-  const onDeletePressed = useCallback((item: {id: string}) => {}, []);
+  const onDeletePressed = useCallback(
+    (item: {id: string}) => {
+      updateHeadlineStatusById(item?.id);
+      setDisplayedHeadlines((prev: any) => {
+        let filteredData = prev?.map((headline: any) => {
+          if (headline?.id !== item?.id) {
+            return headline;
+          } else {
+            return {...headline, isDeleted: true};
+          }
+        });
+        return filteredData;
+      });
+    },
+    [savedHeadlines],
+  );
 
   return (
     <View style={{flex: 1, backgroundColor: theme.colors.background}}>
@@ -134,7 +151,9 @@ const Homescreen = () => {
         </View>
       ) : (
         <NewsList
-          displayedHeadlines={displayedHeadlines}
+          displayedHeadlines={displayedHeadlines?.filter(
+            (item: any) => !item?.isDeleted,
+          )}
           onRefreshPress={onRefreshPress}
           onPinPressed={onPinPressed}
           onDeletePressed={onDeletePressed}
