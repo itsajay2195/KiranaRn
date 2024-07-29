@@ -14,7 +14,7 @@ const newsSlice = createSlice({
       state.headlines = action.payload;
     },
     addPinnedHeadline: (state, action) => {
-      state.pinnedHeadlines.push(action.payload);
+      state.pinnedHeadlines = action.payload;
     },
     removeHeadline: (state, action) => {
       state.headlines = state.headlines.filter(

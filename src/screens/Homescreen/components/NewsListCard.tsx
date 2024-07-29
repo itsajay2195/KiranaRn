@@ -48,19 +48,35 @@ const renderLeftActions = (onPin: () => void, onDelete: () => void) => {
   );
 };
 
-const NewsListCard = ({data}: NewsItemProps) => {
+const NewsListCard = ({
+  data,
+  onDeletePressed,
+  onPinPressed,
+  isPinnedItem,
+}: {
+  data: NewsItemProps;
+  onPinPressed: (val: {id: string}) => void;
+  onDeletePressed: (val: {id: string}) => void;
+  isPinnedItem: boolean;
+}) => {
   const {theme} = useTheme();
   const styles = createStyles(theme);
   return (
     <Swipeable
+      enabled={!isPinnedItem}
       renderRightActions={(progress, dragX) =>
         renderLeftActions(
-          () => console.log('onPin'),
-          () => console.log('onDelete'),
+          () => onPinPressed(data),
+          () => onDeletePressed(data),
         )
       }>
       <View style={styles.container}>
         <View style={styles.infoSection}>
+          {isPinnedItem ? (
+            <View style={styles.pinnedItemWrapper}>
+              <Icon name={'pin'} size={16} color={lightTheme.colors.primary} />
+            </View>
+          ) : null}
           <View style={{flex: 3, flexDirection: 'row'}}>
             <Typography style={{color: theme.colors.grey}} variant={'caption'}>
               {data?.source?.name}
@@ -120,4 +136,14 @@ const createStyles = (theme: any) =>
     },
     imageStyle: {height: '100%', width: '100%', borderRadius: 10},
     infoSection: {flexDirection: 'row', padding: 0},
+    pinnedItemWrapper: {
+      height: 24,
+      width: 24,
+      borderRadius: 50,
+      borderWidth: 0.5,
+      borderColor: lightTheme.colors.grey,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 4,
+    },
   });

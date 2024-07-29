@@ -13,6 +13,7 @@ import {getRandomIndex} from '../../utils/utils';
 import {countries} from '../../utils/utils';
 import {useTheme} from '../../context/ThemeContext';
 import NewsList from './components/NewsList';
+import {addPinnedHeadline} from '../../redux/newsSlice';
 
 const Homescreen = () => {
   const {theme} = useTheme();
@@ -22,6 +23,10 @@ const Homescreen = () => {
   const [displayedHeadlines, setDisplayedHeadlines] = useState<any[]>([]);
   const savedHeadlines = useQuery('News');
   const dispatch = useDispatch();
+  const pinnedHeadline = useSelector(
+    (state: any) => state.news.pinnedHeadlines,
+  );
+
   const previousCountryIndex = useSelector(
     (state: any) => state.news.previousCountryIndex,
   );
@@ -115,6 +120,12 @@ const Homescreen = () => {
     }
   }, [trigger, fetchNextBatch]);
 
+  const onPinPressed = useCallback((item: {id: string}) => {
+    dispatch(addPinnedHeadline(item));
+  }, []);
+
+  const onDeletePressed = useCallback((item: {id: string}) => {}, []);
+
   return (
     <View style={{flex: 1, backgroundColor: theme.colors.background}}>
       {displayedHeadlines?.length == 0 ? (
@@ -125,6 +136,9 @@ const Homescreen = () => {
         <NewsList
           displayedHeadlines={displayedHeadlines}
           onRefreshPress={onRefreshPress}
+          onPinPressed={onPinPressed}
+          onDeletePressed={onDeletePressed}
+          pinnedHeadline={pinnedHeadline}
         />
       )}
     </View>

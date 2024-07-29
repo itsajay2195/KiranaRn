@@ -12,39 +12,83 @@ import Refresh from 'react-native-vector-icons/Feather';
 
 const ListHeaderComponent = ({
   onRefreshPress,
+  pinnedHeadline,
 }: {
   onRefreshPress: () => void;
+  pinnedHeadline: any;
 }) => {
   return (
-    <View style={styles.headerContainer}>
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.headerImageStyle}
-          source={require('../../../assets//png/headline.png')}
-        />
+    <View>
+      <View style={styles.headerContainer}>
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.headerImageStyle}
+            source={require('../../../assets//png/headline.png')}
+          />
+        </View>
+        <TouchableOpacity
+          onPress={onRefreshPress}
+          style={styles.headerRefreshIconWrapper}>
+          <Refresh size={16} name="refresh-ccw" />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        onPress={onRefreshPress}
-        style={styles.headerRefreshIconWrapper}>
-        <Refresh size={16} name="refresh-ccw" />
-      </TouchableOpacity>
+      {Object.keys(pinnedHeadline)?.length > 0 ? (
+        <NewsListCard
+          data={pinnedHeadline}
+          onPinPressed={() => {}}
+          onDeletePressed={() => {}}
+          isPinnedItem={true}
+        />
+      ) : null}
     </View>
   );
 };
 
-const renderItem = ({item}: {item: any}) => {
-  return <NewsListCard data={item} />;
+const RenderItem = ({
+  data,
+  onPinPressed,
+  onDeletePressed,
+}: {
+  data: any;
+  onPinPressed: (val: {id: string}) => void;
+  onDeletePressed: (val: {id: string}) => void;
+}) => {
+  return (
+    <NewsListCard
+      data={data}
+      onPinPressed={onPinPressed}
+      onDeletePressed={onDeletePressed}
+      isPinnedItem={false}
+    />
+  );
 };
 
 const NewsList = ({
   displayedHeadlines,
   onRefreshPress,
+  onPinPressed,
+  onDeletePressed,
+  pinnedHeadline,
 }: {
   displayedHeadlines: any;
   onRefreshPress: () => void;
+  onPinPressed: (val: {id: string}) => void;
+  onDeletePressed: (val: {id: string}) => void;
+  pinnedHeadline: any;
 }) => {
   const listHeaderComponent = () => (
-    <ListHeaderComponent onRefreshPress={onRefreshPress} />
+    <ListHeaderComponent
+      onRefreshPress={onRefreshPress}
+      pinnedHeadline={pinnedHeadline}
+    />
+  );
+
+  const renderItem = ({item, index}: any) => (
+    <RenderItem
+      data={item}
+      onDeletePressed={onDeletePressed}
+      onPinPressed={onPinPressed}
+    />
   );
   return (
     <FlatList
@@ -63,7 +107,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     flex: 1,
     flexDirection: 'row',
-    height: 50,
     justifyContent: 'center',
     alignItems: 'center',
     gap: 10,
