@@ -12,6 +12,7 @@ export class News extends Realm.Object {
       title: 'string',
       description: 'string',
       publishedAt: 'string',
+      textBgColor: 'string',
       isDeleted: {type: 'bool', default: false},
     },
     primaryKey: 'id',

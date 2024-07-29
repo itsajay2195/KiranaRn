@@ -74,6 +74,23 @@ const NewsListCard = ({
               <Icon name={'pin'} size={16} color={theme.colors.primary} />
             </View>
           ) : null}
+          <View
+            style={{
+              height: 20,
+              width: 20,
+              backgroundColor: data?.textBgColor || '#FF0000',
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignSelf: 'center',
+              borderRadius: 10,
+              marginRight: 4,
+            }}>
+            <Typography
+              style={{color: theme.colors.black, fontWeight: 'bold'}}
+              variant={'caption'}>
+              {data?.source?.name?.[0]}
+            </Typography>
+          </View>
           <View style={{flex: 3, flexDirection: 'row'}}>
             <Typography style={{color: theme.colors.grey}} variant={'caption'}>
               {data?.source?.name}

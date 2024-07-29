@@ -6,6 +6,7 @@ export interface NewsItemProps {
   id: string;
   author: string;
   isDeleted: boolean;
+  textBgColor: string;
   source: {
     id: string;
     name: string;

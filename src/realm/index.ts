@@ -1,4 +1,3 @@
-import {createRealmContext} from '@realm/react';
 import Realm from 'realm';
 import {News} from './models/NewsSchema';
 

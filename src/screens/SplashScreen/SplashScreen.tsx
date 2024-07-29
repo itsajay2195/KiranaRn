@@ -9,9 +9,10 @@ const SplashScreen = ({navigation}: any) => {
   const savedHeadlines = useQuery('News');
   const {loadHeadlines, loading} = useLoadHeadLines(navigation);
   useEffect(() => {
-    if (savedHeadlines?.length == 0) {
+    if (!savedHeadlines || savedHeadlines?.length == 0) {
       loadHeadlines(true, 0);
     } else {
+      console.log('inside else', savedHeadlines);
       setTimeout(() => navigation?.navigate('Home'), 2000);
     }
   }, []);

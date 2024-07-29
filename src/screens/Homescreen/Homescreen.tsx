@@ -37,12 +37,12 @@ const Homescreen = () => {
   }, [previousCountryIndex, countries]);
 
   const fetchNextBatch = useCallback(() => {
-    if (currentIndex >= savedHeadlines.length && savedHeadlines?.length > 0) {
+    if (currentIndex >= savedHeadlines?.length && savedHeadlines?.length > 0) {
       if (timerRef.current) clearInterval(timerRef.current);
       setCurrentIndex(0);
       resetData();
     } else {
-      const batchSize = displayedHeadlines.length === 0 ? 10 : 5;
+      const batchSize = displayedHeadlines?.length === 0 ? 10 : 5;
       const newIndex = currentIndex + batchSize;
       const nextBatch = savedHeadlines.slice(currentIndex, newIndex);
       setCurrentIndex(newIndex);
@@ -59,11 +59,11 @@ const Homescreen = () => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
       setTrigger(true);
-    }, 10000); // 4 seconds
+    }, 10000000); // 4 seconds
   }, [savedHeadlines]);
 
   useEffect(() => {
-    if (savedHeadlines.length === 0) {
+    if (savedHeadlines?.length === 0) {
       loadHeadlines(true, 0); // Fetch and store initial data
     } else {
       fetchNextBatch(); // Fetch initial batch if data is already stored
