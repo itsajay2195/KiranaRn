@@ -8,7 +8,6 @@ import {dateFormatter} from '../../../utils/utils';
 const NewsListCard = ({data}: NewsItemProps) => {
   const {theme} = useTheme();
   const styles = createStyles(theme);
-  console.log(JSON.stringify(data, null, 3));
   return (
     <View style={styles.container}>
       <View style={styles.infoSection}>
