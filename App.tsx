@@ -29,19 +29,20 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from './src/screens/SplashScreen/SplashScreen';
 import {NavigationContainer} from '@react-navigation/native';
+import {HOME_SCREEN, SPLASH_SCREEN} from './src/utils/screenConstants';
 
 const Stack = createNativeStackNavigator();
 const RootNavigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash">
+      <Stack.Navigator initialRouteName={SPLASH_SCREEN}>
         <Stack.Screen
-          name="Splash"
+          name={SPLASH_SCREEN}
           component={SplashScreen}
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name="Home"
+          name={HOME_SCREEN}
           component={Homescreen}
           options={{headerShown: false}}
         />
@@ -55,8 +56,8 @@ function App(): React.JSX.Element {
 
   return (
     <Provider store={appstore}>
-      <GestureHandlerRootView style={{flex: 1}}>
-        <SafeAreaView style={{flex: 1}}>
+      <GestureHandlerRootView style={styles.flex1}>
+        <SafeAreaView style={styles.flex1}>
           <RealmProvider {...realmConfig}>
             <RootNavigation />
           </RealmProvider>
@@ -82,6 +83,9 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+  flex1: {
+    flex: 1,
   },
 });
 

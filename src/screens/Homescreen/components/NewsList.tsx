@@ -30,7 +30,7 @@ const ListHeaderComponent = ({
         <TouchableOpacity
           onPress={onRefreshPress}
           style={styles.headerRefreshIconWrapper}>
-          <Refresh size={16} name="refresh-ccw" />
+          <Refresh size={theme.iconSizes.small} name="refresh-ccw" />
         </TouchableOpacity>
       </View>
       {Object.keys(pinnedHeadline)?.length > 0 ? (

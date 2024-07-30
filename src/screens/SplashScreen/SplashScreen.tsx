@@ -17,9 +17,9 @@ const SplashScreen = ({navigation}: any) => {
     }
   }, []);
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={styles.container}>
       <Image
-        style={{width: '100%', height: 80}}
+        style={styles.imageStyle}
         source={require('../../assets//png/headline.png')}
       />
       {loading ? (
@@ -31,4 +31,7 @@ const SplashScreen = ({navigation}: any) => {
 
 export default SplashScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  imageStyle: {width: '100%', height: 80},
+});

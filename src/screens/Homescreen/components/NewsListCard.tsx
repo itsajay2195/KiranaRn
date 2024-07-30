@@ -14,31 +14,23 @@ const renderLeftActions = (onPin: () => void, onDelete: () => void) => {
       style={{
         justifyContent: 'center',
       }}>
-      <TouchableOpacity
-        onPress={onDelete}
-        style={{
-          paddingTop: theme.sizes.small,
-          backgroundColor: theme.colors.secondaryBlue,
-          paddingHorizontal: 8,
-          alignItems: 'center',
-          borderTopLeftRadius: 10,
-        }}>
-        <Trash name={'trash'} size={20} color={theme.colors.white} />
+      <TouchableOpacity onPress={onDelete} style={styles.swipeIconWrapper}>
+        <Trash
+          name={'trash'}
+          size={theme.iconSizes.xMedium}
+          color={theme.colors.white}
+        />
         <Typography variant="caption" style={{color: theme.colors.white}}>
           Delete
         </Typography>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        onPress={onPin}
-        style={{
-          paddingTop: theme.sizes.small,
-          backgroundColor: theme.colors.secondaryBlue,
-          paddingHorizontal: 8,
-          alignItems: 'center',
-          borderBottomLeftRadius: 10,
-        }}>
-        <Icon name={'pin'} size={16} color={theme.colors.white} />
+      <TouchableOpacity onPress={onPin} style={styles.swipeIconWrapper}>
+        <Icon
+          name={'pin'}
+          size={theme.iconSizes.small}
+          color={theme.colors.white}
+        />
         <Typography style={{color: theme.colors.white}} variant="caption">
           Pin
         </Typography>
@@ -71,20 +63,18 @@ const NewsListCard = ({
         <View style={styles.infoSection}>
           {isPinnedItem ? (
             <View style={styles.pinnedItemWrapper}>
-              <Icon name={'pin'} size={16} color={theme.colors.primary} />
+              <Icon
+                name={'pin'}
+                size={theme.iconSizes.small}
+                color={theme.colors.primary}
+              />
             </View>
           ) : null}
           <View
-            style={{
-              height: 20,
-              width: 20,
-              backgroundColor: data?.textBgColor || '#FF0000',
-              justifyContent: 'center',
-              alignItems: 'center',
-              alignSelf: 'center',
-              borderRadius: 10,
-              marginRight: 4,
-            }}>
+            style={[
+              styles.labelLetterStyle,
+              {backgroundColor: data?.textBgColor || '#FF0000'},
+            ]}>
             <Typography
               style={{color: theme.colors.black, fontWeight: 'bold'}}
               variant={'caption'}>
@@ -134,13 +124,13 @@ export default NewsListCard;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 12,
+    padding: theme.sizes.xMedium,
     backgroundColor: theme.colors.background,
   },
   centerContent: {
     flexDirection: 'row',
-    gap: 8,
-    paddingVertical: 8,
+    gap: theme.sizes.small,
+    paddingVertical: theme.sizes.small,
   },
   titleContainer: {flex: 3},
   imageWrapper: {
@@ -157,6 +147,22 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.grey,
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: 4,
+  },
+  swipeIconWrapper: {
+    paddingTop: theme.sizes.small,
+    backgroundColor: theme.colors.secondaryBlue,
+    paddingHorizontal: theme.sizes.small,
+    alignItems: 'center',
+    borderTopLeftRadius: 10,
+  },
+  labelLetterStyle: {
+    height: 20,
+    width: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: 10,
     marginRight: 4,
   },
 });
