@@ -21,35 +21,10 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import appstore from './src/redux/appstore';
 import {Provider} from 'react-redux';
-import Homescreen from './src/screens/Homescreen/Homescreen';
 import {realmConfig} from './src/realm';
-import {News} from './src/realm/models/NewsSchema';
 import {RealmProvider} from '@realm/react';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import SplashScreen from './src/screens/SplashScreen/SplashScreen';
-import {NavigationContainer} from '@react-navigation/native';
-import {HOME_SCREEN, SPLASH_SCREEN} from './src/utils/screenConstants';
-
-const Stack = createNativeStackNavigator();
-const RootNavigation = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName={SPLASH_SCREEN}>
-        <Stack.Screen
-          name={SPLASH_SCREEN}
-          component={SplashScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={HOME_SCREEN}
-          component={Homescreen}
-          options={{headerShown: false}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
+import RootNavigation from './src/RootNavigation';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';

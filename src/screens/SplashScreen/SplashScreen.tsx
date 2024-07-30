@@ -12,7 +12,6 @@ const SplashScreen = ({navigation}: any) => {
     if (!savedHeadlines || savedHeadlines?.length == 0) {
       loadHeadlines(true, 0);
     } else {
-      console.log('inside else', savedHeadlines);
       setTimeout(() => navigation?.navigate('Home'), 2000);
     }
   }, []);
